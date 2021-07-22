@@ -9,7 +9,13 @@ import { convertDurationToTimeString } from '../utils/convertDuration'
 type Episode = {
   id: string;
   title: string;
+  thumbnail: string;
+  description: string;
   members: string;
+  duration: number;
+  durationAsString: string;
+  url: string;
+  publishedAt: string;
 }
 
 type HomeProps = {
@@ -41,7 +47,7 @@ export  const getStaticProps: GetStaticProps = async () =>{
   // const data = await response.json()
 
   const episodes = data.map(episodes => {
-    return {
+    return { 
       id: episodes.id,
       title: episodes.title,
       thumbnail: episodes.thumbnail,
