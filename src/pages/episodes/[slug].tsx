@@ -2,6 +2,8 @@ import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import { api } from "../../services/api"
 
+import Link from 'next/link'
+
 import Image from 'next/image'
 
 import { format, parseISO } from 'date-fns'
@@ -35,9 +37,11 @@ export default function Episode({ episode }: EpisodeProps) {
     return (
         <div className={styles.episode}>
             <div className={styles.thumbnailContainer}>
-                <button type="button">
-                    <Image src={arrowLeft} alt="Voltar" />
-                </button>
+                <Link href='/'>
+                    <button type="button">
+                        <Image src={arrowLeft} alt="Voltar" />
+                    </button>
+                </Link>
 
                 <Image 
                 width={700} 
