@@ -12,6 +12,8 @@ import { convertDurationToTimeString } from '../utils/convertDuration'
 import styles from './home.module.scss'
 
 import playGreen from '../../public/play-green.svg'
+import { useContext } from 'react'
+import { PlayerContext } from '../contexts/PlayerContext'
 
 
 type Episode = {
@@ -33,6 +35,8 @@ type HomeProps = {
 
 export default function Home({ lastesEpisodes, allEpisodes }: HomeProps) {
 
+  const { play } = useContext(PlayerContext)
+
   return (
     <div className={styles.homePage}>
       <section className={styles.latesEpisodes}>
@@ -53,7 +57,7 @@ export default function Home({ lastesEpisodes, allEpisodes }: HomeProps) {
                   <span>{episode.durationAsString}</span>
                 </div>
 
-                <button type="button">
+                <button type="button" onClick={() => play(episode)}>
                   <Image src={playGreen} alt="Tocar episodio" />
                 </button>
               </li>
