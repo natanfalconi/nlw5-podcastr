@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import styles from './styles.module.scss'
+import { useContext } from 'react'
+import { PlayerContext } from '../../contexts/PlayerContext'
 
 import playing from '../../../public/playing.svg'
 import shuffle from '../../../public/shuffle.svg'
@@ -10,12 +12,14 @@ import repeat from '../../../public/repeat.svg'
 
 
 export function Player(){
+
+    const player = useContext(PlayerContext)
     
     return(
         <div className={styles.playerContainer}>
             <header>
                 <Image src={playing} alt="Tocando agora" />
-                <strong>Tocando Agora</strong>
+                <strong>Tocando Agora {player}</strong>
             </header>
 
             <div className={styles.emptyPlayer}>
