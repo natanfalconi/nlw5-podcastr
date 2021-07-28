@@ -8,12 +8,12 @@ import ptBR from "date-fns/locale/pt-BR"
 
 import { api } from '../services/api'
 import { convertDurationToTimeString } from '../utils/convertDuration'
+import { useContext } from 'react'
+import { PlayerContext } from '../contexts/PlayerContext'
 
 import styles from './home.module.scss'
 
 import playGreen from '../../public/play-green.svg'
-import { useContext } from 'react'
-import { PlayerContext } from '../contexts/PlayerContext'
 
 
 type Episode = {
