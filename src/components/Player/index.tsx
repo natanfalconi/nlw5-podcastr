@@ -1,57 +1,121 @@
 import Image from 'next/image'
 import styles from './styles.module.scss'
-import { useContext } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { PlayerContext } from '../../contexts/PlayerContext'
+
+import Slider from 'rc-slider'
+import 'rc-slider/assets/index.css'
 
 import playing from '../../../public/playing.svg'
 import shuffle from '../../../public/shuffle.svg'
 import previous from '../../../public/play-previous.svg'
 import play from '../../../public/play.svg'
+import pause from '../../../public/pause.svg'
 import next from '../../../public/play-next.svg'
 import repeat from '../../../public/repeat.svg'
 
 
-export function Player(){
+export function Player() {
 
-    const { episodeList, currentEpisodeIndex } = useContext(PlayerContext)
+    const audioRef = useRef<HTMLAudioElement>(null)
+
+    const { episodeList,
+        currentEpisodeIndex,
+        isPlaying,
+        togglePlay,
+        setPlayingState
+    } = useContext(PlayerContext)
+
+
+    useEffect(() =>{
+        if ( !audioRef.current) {
+            return
+        } 
+
+        if ( isPlaying) {
+            audioRef.current.play()
+        }else(
+            audioRef.current.pause()
+        )
+    }, [isPlaying])
+
 
     const episode = episodeList[currentEpisodeIndex]
-    
-    return(
+
+    return (
         <div className={styles.playerContainer}>
             <header>
                 <Image src={playing} alt="Tocando agora" />
-                <strong>Tocando Agora {episode?.title}</strong>
+                <strong>Tocando Agora</strong>
             </header>
 
-            <div className={styles.emptyPlayer}>
-                <strong>Selecione um podcast para ouvir</strong>
-            </div>
+            {episode ? (
+                <div className={styles.currentEpisode}>
+                    <Image
+                        width={592}
+                        height={592}
+                        src={episode.thumbnail}
+                        objectFit="cover"
+                    />
+                    <strong>{episode.title}</strong>
+                    <span>{episode.members}</span>
+                </div>
+            ) : (
+                <div className={styles.emptyPlayer}>
+                    <strong>Selecione um podcast para ouvir</strong>
+                </div>
+            )}
 
-            <footer className={styles.empty}>
+            <footer className={!episode ? styles.empty : ''}>
                 <div className={styles.progress}>
                     <span>00:00</span>
 
                     <div className={styles.slider}>
-                        <div className={styles.emptySlider} />
+                        {episode ? (
+                            <Slider
+                                trackStyle={{ backgroundColor: '#04d361' }}
+                                railStyle={{ backgroundColor: '#9f75ff' }}
+                                handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
+                            />
+                        ) : (
+                            <div className={styles.emptySlider} />
+                        )}
                     </div>
                     <span>00:00</span>
                 </div>
 
+                {episode && (
+                    <audio 
+                        src={episode.url} 
+                        ref={audioRef}
+                        autoPlay
+                        onPlay={() => setPlayingState(true)} 
+                        onPause={() => setPlayingState(false)} 
+                    />
+                )}
+
                 <div className={styles.buttons}>
-                    <button type="button">
+                    <button type="button" disabled={!episode}>
                         <Image src={shuffle} alt="Embaralhar" />
                     </button>
-                    <button type="button">
+                    <button type="button" disabled={!episode}>
                         <Image src={previous} alt="Tocar Anterior" />
                     </button>
-                    <button type="button" className={styles.playerButton}>
-                        <Image src={play} alt="Tocar" />
+                    <button 
+                        type="button" 
+                        className={styles.playerButton} 
+                        disabled={!episode}
+                        onClick={togglePlay}
+                    
+                    >
+                        {isPlaying
+                            ? <Image src={pause} alt="Tocar" />
+                            : <Image src={play} alt="Tocar" />}
                     </button>
-                    <button type="button">
+                    <button type="button" disabled={!episode}>
                         <Image src={next} alt="Tocar próxima" />
                     </button>
-                    <button type="button">
+                    <button type="button" disabled={!episode}>
                         <Image src={repeat} alt="Repetir" />
                     </button>
                 </div>
