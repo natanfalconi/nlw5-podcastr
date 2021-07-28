@@ -12,9 +12,13 @@ type PlayerContextData = {
     episodeList: Episode[];
     currentEpisodeIndex: number;
     isPlaying: boolean;
+    isLooping: boolean;
+    isShuffling: boolean;
     playList: (list: Episode[], index: number) => void
     play: (episode: Episode) => void
     togglePlay: () => void;
+    toggleLoop: () => void;
+    toggleShuffle: () => void;
     playNext: () => void;
     playPrevious: () => void;
     setPlayingState: (state: boolean) => void;
@@ -32,6 +36,8 @@ export function PlayerContextProvider({ children }: PlayerContextProviderProps) 
     const [episodeList, setEpisodeList] = useState([])
     const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(0)
     const [isPlaying, setIsPlaying] = useState(false)
+    const [isLooping, setIsLooping] = useState(false)
+    const [isShuffling, setIsShuffling] = useState(false)
 
     function play(episode: Episode) {
         setEpisodeList([episode]);
@@ -47,6 +53,14 @@ export function PlayerContextProvider({ children }: PlayerContextProviderProps) 
 
     function togglePlay() {
         setIsPlaying(!isPlaying)
+    }
+
+    function toggleLoop() {
+        setIsLooping(!isLooping)
+    }
+    
+    function toggleShuffle() {
+        setIsShuffling(!isShuffling)
     }
 
     function setPlayingState(state: boolean) {
@@ -73,15 +87,19 @@ export function PlayerContextProvider({ children }: PlayerContextProviderProps) 
             value={{
                 episodeList,
                 currentEpisodeIndex,
-                play,
                 isPlaying,
+                hasNext,
+                hasPrevious,
+                isLooping,
+                isShuffling,
+                play,
                 togglePlay,
                 playNext,
                 playPrevious,
                 playList,
-                hasNext,
-                hasPrevious,
-                setPlayingState
+                toggleLoop,
+                setPlayingState,
+                toggleShuffle
             }}
         >
             {children}
