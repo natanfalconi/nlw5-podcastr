@@ -55,7 +55,7 @@ export function PlayerContextProvider({ children }: PlayerContextProviderProps) 
         setIsPlaying(!isPlaying)
     }
 
-    function toggleLoop() {
+    function toggleLoop() { 
         setIsLooping(!isLooping)
     }
     
@@ -71,7 +71,11 @@ export function PlayerContextProvider({ children }: PlayerContextProviderProps) 
     const hasNext = (currentEpisodeIndex + 1) < episodeList.length
 
     function playNext() {
-        if(hasNext) {
+        if(isShuffling) {
+            const nextRandomEpisodeIndex = Math.floor(Math.random() * episodeList.length)
+            setCurrentEpisodeIndex(nextRandomEpisodeIndex)
+
+        } else if(hasNext) {
             setCurrentEpisodeIndex(currentEpisodeIndex + 1)
         }
     }
