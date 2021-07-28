@@ -17,7 +17,7 @@ import repeat from '../../../public/repeat.svg'
 
 export function Player() {
 
-    const audioRef = useRef<HTMLAudioElement>(null)
+    const audioRef = useRef<HTMLAudioElement>(null) 
 
     const { episodeList,
         currentEpisodeIndex,
