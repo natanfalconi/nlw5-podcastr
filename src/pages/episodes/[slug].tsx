@@ -35,10 +35,7 @@ type EpisodeProps = {
 
 export default function Episode({ episode }: EpisodeProps) {
     const { play } = usePlayer()
-
-
     return (
-
         <div className={styles.episode}>
 
             <Head>
